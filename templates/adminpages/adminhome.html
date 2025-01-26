@@ -1,0 +1,35 @@
+{% extends "adminpages/adminbase.html" %}
+
+{% block title %}Admin Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="title is-4">Pending Orders</h3>
+    <table class="table is-fullwidth">
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Ordered On</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in pendingorders %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>
+                    <a class="has-text-link" href="{% url 'ecommapp:adminorderdetail' order.id %}">
+                        #ORDER_{{order.id}}
+                    </a>
+                </td>
+                <td>{{order.ordered_by}}</td>
+                <td>{{order.created_at}}</td>
+                <td>{{order.total}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

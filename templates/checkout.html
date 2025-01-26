@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="columns">
+        <!-- Cart Items Column -->
+        <div class="column is-half">
+            <!-- Improved Heading Style -->
+            <h3 class="title is-4 has-text-left has-text-weight-bold" style="color: #4A90E2;">Items in the Cart</h3>
+            
+            <!-- Improved Table Design -->
+            <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <thead>
+                    <tr class="has-background-info-light">
+                        <th>SN</th>
+                        <th>Product</th>
+                        <th>Rate</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cp in cart.cartproduct_set.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ cp.product.title }}</td>
+                        <td>Rs. {{ cp.rate }}</td>
+                        <td>{{ cp.quantity }}</td>
+                        <td>Rs. {{ cp.subtotal }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <th colspan="4" class="has-text-right">Total</th>
+                        <th>Rs. {{ cart.total }}</th>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="{% url 'ecommapp:mycart' %}" class="button is-link is-small mb-3">Update Cart</a>
+        </div>
+
+        <!-- Checkout Form Column -->
+        <div class="column is-half">
+            <!-- Styled Heading -->
+            <h3 class="title is-4 has-text-left has-text-weight-bold" style="color: #4A90E2;">Checkout Form</h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                <!-- Ordered By -->
+                <div class="field">
+                    <label class="label">Ordered by:</label>
+                    <div class="control">
+                        <input class="input" type="text" name="ordered_by" placeholder="Your Name">
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="field">
+                    <label class="label">Shipping address:</label>
+                    <div class="control">
+                        <input class="input" type="text" name="shipping_address" placeholder="Your Shipping Address">
+                    </div>
+                </div>
+
+                <!-- Mobile -->
+                <div class="field">
+                    <label class="label">Mobile:</label>
+                    <div class="control">
+                        <input class="input" type="text" name="mobile" placeholder="Your Mobile Number">
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="field">
+                    <label class="label">Email:</label>
+                    <div class="control">
+                        <input class="input" type="email" name="email" placeholder="Your Email">
+                    </div>
+                </div>
+
+              
+
+                <!-- Submit Button -->
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-info is-fullwidth">Place Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

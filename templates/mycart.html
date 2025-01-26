@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}My cart{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="columns">
+        <div class="column is-two-thirds">
+            
+            <h4 class="title is-4 has-text-left has-text-weight-bold" style="color: #4A90E2;">Items in My Cart</h4>
+            <hr>
+            
+            <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <thead>
+                    <tr class="has-background-info-light">
+                        <th>SN</th>
+                        <th>Product</th>
+                        <th>Rate</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cp in cart.cartproduct_set.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ cp.product.title }}</td>
+                        <td>Rs. {{ cp.rate }}</td>
+                        <td>{{ cp.quantity }}</td>
+                        <td>Rs. {{ cp.subtotal }}</td>
+                        <td>
+                            <a href="{% url 'ecommapp:managecart' cp.id %}?action=inc" class="button is-success is-small">+</a>
+                            <a href="{% url 'ecommapp:managecart' cp.id %}?action=dcr" class="button is-warning is-small">-</a>
+                            <a href="{% url 'ecommapp:managecart' cp.id %}?action=rmv" class="button is-danger is-small">x</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <th colspan="4" class="has-text-right">Total</th>
+                        <th>Rs. {{ cart.total }}</th>
+                        {% if cart.cartproduct_set.all %}
+                        <th><a href="{% url 'ecommapp:emptycart' %}" class="button is-danger is-light">Empty Cart</a></th>
+                        {% endif %}
+                    </tr>
+                    {% if cart.cartproduct_set.all %}
+                    <tr>
+                        <th colspan="6">
+                            <a class="button is-info" href="{% url 'ecommapp:checkout' %}">Proceed to Checkout</a>
+                        </th>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

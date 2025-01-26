@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <style>
+        section {
+            margin-top: 0; /* Remove unnecessary space */
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{% url 'ecommapp:home' %}">
+                Our Ecommerce
+            </a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="{% url 'ecommapp:home' %}">
+                    Home
+                </a>
+                <a class="navbar-item" href="{% url 'ecommapp:allproducts' %}">
+                    Categories
+                </a>
+                <a class="navbar-item" href="{% url 'ecommapp:mycart' %}">
+                    Cart
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        My Account
+                    </a>
+                    <div class="navbar-dropdown">
+                        {% if request.user.customer %}
+                        <a class="navbar-item" href="{% url 'ecommapp:customerprofile' %}">
+                            My Profile
+                        </a>
+                        <a class="navbar-item" href="{% url 'ecommapp:customerlogout' %}">
+                            Logout
+                        </a>
+                        {% else %}
+                        <a class="navbar-item" href="{% url 'ecommapp:customerregistration' %}">
+                            Register
+                        </a>
+                        <a class="navbar-item" href="{% url 'ecommapp:customerlogin' %}">
+                            Login
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <form class="field has-addons" action="{% url 'ecommapp:search' %}" method="GET">
+                        <div class="control">
+                            <input name="keyword" class="input" type="search" placeholder="Search" required>
+                        </div>
+                        <div class="control">
+                            <button class="button is-dark" type="submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            if ($navbarBurgers.length > 0) {
+                $navbarBurgers.forEach(el => {
+                    el.addEventListener('click', () => {
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

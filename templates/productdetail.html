@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="title is-3">Product: {{ product.title }}</h3>
+    <hr>
+    <div class="columns">
+        <div class="column is-one-third">
+            <figure class="image">
+                <img src="{{ product.image.url }}" alt="">
+            </figure>
+            
+        </div>
+        <div class="column">
+            <h4 class="title is-4">{{ product.title }} (Viewed {{ product.view_count }} times)</h4>
+            <h5 class="subtitle is-5">Category: {{ product.category }}</h5>
+            <h5 class="subtitle is-5">
+                Price: <del>Rs. {{ product.marked_price }}</del>
+                <span class="has-text-weight-bold">Rs. {{ product.selling_price }}</span>
+            </h5>
+            <a href="{% url 'ecommapp:addtocart' product.id %}" class="button is-primary">Add To Cart</a>
+            <hr>
+            <p class="has-text-info">Warranty: {{ product.warranty }}</p>
+            <p class="has-text-info">Return Policy: {{ product.return_policy }}</p>
+            <hr>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

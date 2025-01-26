@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Add to Cart{% endblock %}
+
+{% block content %}
+<div class="container has-text-centered mt-5">
+    <div class="box">
+        <h3 class="title is-3 has-text-success">Product added to cart successfully!</h3>
+        <p class="content is-medium">You can continue shopping or view your cart to proceed with checkout.</p>
+        <div class="buttons is-centered mt-4">
+            <a href="{% url 'ecommapp:mycart' %}" class="button is-primary is-medium">View Cart</a>
+            <a href="{% url 'ecommapp:home' %}" class="button is-link is-medium">Continue Shopping</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

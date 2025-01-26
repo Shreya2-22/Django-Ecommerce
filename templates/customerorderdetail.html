@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Order Detail{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <!-- Order Detail Heading -->
+            <h3 class="title is-4 has-text-left has-text-weight-bold" style="color: #4A90E2;">Order Detail</h3>
+            <hr>
+
+            <!-- Order Information -->
+            <p><strong>Order ID: </strong> #ORDER_{{ ord_obj.id }}</p>
+            <p><strong>Order Status: </strong> {{ ord_obj.order_status }}</p>
+            <p><strong>Order On: </strong> {{ ord_obj.created_at }} ({{ ord_obj.created_at|timesince }} ago)</p>
+            <p><strong>Customer Information: </strong> By {{ ord_obj.ordered_by }}, {{ ord_obj.mobile }}</p>
+            <p><strong>Shipping Address: </strong> {{ ord_obj.shipping_address }} ({{ ord_obj.email }})</p><hr>
+
+            <!-- Ordered Items Heading -->
+            <h4 class="title is-5 has-text-left has-text-weight-semibold" style="color: #4A90E2;">Ordered Items</h4>
+            
+            <!-- Updated Table Design -->
+            <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <thead>
+                    <tr class="has-background-info-light">
+                        <th>SN</th>
+                        <th>Item</th>
+                        <th>Rate</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cp in ord_obj.cart.cartproduct_set.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a href="{% url 'ecommapp:productdetail' cp.product.slug %}" style="color: #4A90E2; text-decoration: none;" target="_blank">
+                                {{ cp.product.title }} ({{ cp.product.id }})
+                            </a>
+                        </td>
+                        <td>Rs. {{ cp.rate }}</td>
+                        <td>{{ cp.quantity }}</td>
+                        <td>Rs. {{ cp.subtotal }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <th colspan="4" class="has-text-right">Total:</th>
+                        <th>Rs. {{ ord_obj.total|intcomma }}/-</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="columns">
+        <!-- Customer Information Column -->
+        <div class="column is-one-third">
+            <h3 class="title is-4 has-text-left has-text-weight-bold" style="color: #4A90E2;">Detail Information</h3>
+            <hr>
+            <p><strong>Name: </strong>{{customer.full_name}}</p>
+            <p><strong>Username: </strong>{{customer.user.username}}</p>
+            <p><strong>Email: </strong>{{customer.user.email}}</p>
+            <p><strong>Address: </strong>{{customer.address}}</p>
+            <p><strong>Joined on: </strong>{{customer.joined_on}}</p>
+        </div>
+
+        <!-- Previous Orders Column -->
+        <div class="column">
+            <h3 class="title is-4 has-text-left has-text-weight-bold" style="color: #4A90E2;">Previous Orders</h3>
+            <hr>
+            <!-- Updated Table Design -->
+            <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <thead>
+                    <tr class="has-background-info-light">
+                        <th>SN</th>
+                        <th>Order ID</th>
+                        <th>Amount</th>
+                        <th>Ordered on</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ord in orders %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a href="{% url 'ecommapp:customerorderdetail' ord.pk %}" style="color: #4A90E2; text-decoration: none;">
+                                #ORDER_{{ ord.id }}
+                            </a>
+                        </td>
+                        <td>Rs. {{ ord.total }}</td>
+                        <td>{{ ord.created_at|timesince }} ago</td>
+                        <td>{{ ord.order_status }}</td> <!-- Normal text for status -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

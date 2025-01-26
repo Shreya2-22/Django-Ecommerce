@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <h1 class="title has-text-centered">Welcome to our ecommerce website</h1>
+    <hr>
+    <div class="columns is-multiline mt-3">
+        {% for p in product_list %}
+        <div class="column is-one-quarter">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src="{{ p.image.url }}" alt="" style="object-fit: contain;">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <h4 class="title is-5">
+                        <a href="{% url 'ecommapp:productdetail' p.slug %}">{{ p.title }}</a>
+                    </h4>
+                    <p class="content">
+                        Price: <del>Rs. {{ p.marked_price }}</del> Rs. {{ p.selling_price }}
+                    </p>
+                    <a href="{% url 'ecommapp:addtocart' p.id %}" class="button is-primary">Add To Cart</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% if product_list.has_previous %}
+        <a class="pagination-previous" href="?page={{ product_list.previous_page_number }}">Previous</a>
+        {% else %}
+        <a class="pagination-previous" disabled>Previous</a>
+        {% endif %}
+
+        {% if product_list.has_next %}
+        <a class="pagination-next" href="?page={{ product_list.next_page_number }}">Next</a>
+        {% else %}
+        <a class="pagination-next" disabled>Next</a>
+        {% endif %}
+
+        <ul class="pagination-list">
+            {% for i in product_list.paginator.page_range %}
+            {% if i == product_list.number %}
+            <li>
+                <a class="pagination-link is-current">{{ i }}</a>
+            </li>
+            {% else %}
+            <li>
+                <a class="pagination-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+
+</div>
+{% endblock %}
